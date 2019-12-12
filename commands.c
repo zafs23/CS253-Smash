@@ -86,8 +86,8 @@ void executeCommand(char *str ){
             int numcopy;
         };
 
-	    // initialize variables
-	    int commandNum = pipePresent+1;
+	// initialize variables
+	int commandNum = pipePresent+1;
         int noError = 1; // for error checking
         //struct initialization
         struct pipeCmd pipecmd[commandNum]; // voyonkor ekta vul cilo
@@ -170,9 +170,9 @@ void executeCommand(char *str ){
     		}else {// else of no pipe present
 	    		if (jP==0){
     		    	commandEnd (argsCopy[iparse]);
-    		    }
+    		      }
 	    		pipecmdCP[jS].argspCopy[jP] = argsCopy[iparse];
-                jP++;
+                        jP++;
 	    		pipecmdCP[jS].numcopy = jP;
 	    	}// end of no pipe
 	    	if (iparse == tokenNumber -1){ // only for the forloop
