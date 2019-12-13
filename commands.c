@@ -100,20 +100,20 @@ void executeCommand(char *str ){
         }
 
 	    // parsing pipe
-	    int jP = 0;// number of arrays in one struct
-	    int jS = 0; // number of structs
-	    for (int iparse=0; iparse<tokenNumber ;iparse++){ // parsing pipes
-	    	if (strchr(argsCopy[iparse], '|') != NULL){
-    			if ( strlen(argsCopy[iparse]) > 1){
+	int jP = 0;// number of arrays in one struct
+	int jS = 0; // number of structs
+	for (int iparse=0; iparse<tokenNumber ;iparse++){ // parsing pipes
+	    if (strchr(argsCopy[iparse], '|') != NULL){
+    		if ( strlen(argsCopy[iparse]) > 1){
                     char *commPi = argsCopy[iparse];
-    				int index = strchr(argsCopy[iparse],'|')-argsCopy[iparse];
-    			    int length = strlen(argsCopy[iparse]);
+    		    int index = strchr(argsCopy[iparse],'|')-argsCopy[iparse];
+    	            int length = strlen(argsCopy[iparse]);
                     //fprintf(stderr, "%d %d\n",index, length );
-    				char *argsPip[strlen(argsCopy[iparse])];
-    				char *pipeToken = strtok(argsCopy[iparse], "|");
-    				int piJ =0;// track tokens
-	    	        while( pipeToken != NULL){
-                        argsPip[piJ] = pipeToken;
+    		    char *argsPip[strlen(argsCopy[iparse])];
+    		    char *pipeToken = strtok(argsCopy[iparse], "|");
+    		    int piJ =0;// track tokens
+	    	    while( pipeToken != NULL){
+                    	argsPip[piJ] = pipeToken;
                         
                         if (index == 0){
                             jS++;
@@ -210,27 +210,27 @@ void executeCommand(char *str ){
                         }// end of token
                         if (index == 0){
                             commandEnd(argsIn[0]);
-    			    		pipecmd[iinout].pipein = argsIn[0];
-    			    	}//end of first index
-    			        if ((index>0) && (index <(length-1))){
+    			    pipecmd[iinout].pipein = argsIn[0];
+    			 }//end of first index
+    			 if ((index>0) && (index <(length-1))){
                             commandEnd(argsIn[0]);
-    			    		pipecmd[iinout].argsP[track] = argsIn[0];
+    			    pipecmd[iinout].argsP[track] = argsIn[0];
                             track++;
                             pipecmd[iinout].num++;
 
                             commandEnd(argsIn[1]);
-    			    		pipecmd[iinout].pipein = argsIn[1];
-    			    	}// end of middle index
-    			        if(index == (length-1)){
+    			    pipecmd[iinout].pipein = argsIn[1];
+    			  }// end of middle index
+    			  if(index == (length-1)){
                             pipeinprev = 1;
                             commandEnd(argsIn[0]);
-    			    	    pipecmd[iinout].argsP[track] = argsIn[0];
+    			    pipecmd[iinout].argsP[track] = argsIn[0];
                             track++;
                             pipecmd[iinout].num++;
-    			    	}// end of last index
-    			    } else {// < only present no other command
+    			   }// end of last index
+    			} else {// < only present no other command
                         pipeinprev = 1;
-    			    }// end of < parsing
+    			}// end of < parsing
     		    }else if (strchr(pipecmdCP[iinout].argspCopy[jinout],'>') != NULL){// start of > parsing
     			    pipecmd[iinout].pOut++;
     			    if ( strlen(pipecmdCP[iinout].argspCopy[jinout]) > 1){// start of > and other command
@@ -244,26 +244,26 @@ void executeCommand(char *str ){
     			    	    argsOut[ipOut] = tokenOut;
     			    	    tokenOut = strtok(NULL, ">");
     			    	    ipOut ++;
-                        }
-                        if (index == 0){
-                            commandEnd(argsOut[0]);
-    			    		pipecmd[iinout].pipeout = argsOut[0]; 
+                                }
+                                if (index == 0){
+                                    commandEnd(argsOut[0]);
+    			    	    pipecmd[iinout].pipeout = argsOut[0]; 
     			    	}// end of first index
     			        if ((index>0) && (index <(length-1))){
-                            commandEnd(argsOut[0]);
-    			    		pipecmd[iinout].argsP[track] = argsOut[0];
-                            pipecmd[iinout].num++;
-                            commandEnd(argsOut[1]);
-    			    		pipecmd[iinout].pipeout = argsOut[1];
+                                     commandEnd(argsOut[0]);
+    			    	     pipecmd[iinout].argsP[track] = argsOut[0];
+                                     pipecmd[iinout].num++;
+                                     commandEnd(argsOut[1]);
+    			             pipecmd[iinout].pipeout = argsOut[1];
     			    	}// end of middle index
     			        if(index == (length-1)){
-                            pipeoutprev = 1;
-                            commandEnd(argsOut[0]);
-    			    	    pipecmd[iinout].argsP[track] = argsOut[0];
-                            pipecmd[iinout].num++;
+                                      pipeoutprev = 1;
+                                      commandEnd(argsOut[0]);
+    			    	      pipecmd[iinout].argsP[track] = argsOut[0];
+                                      pipecmd[iinout].num++;
     			    	}// end of last index
     			    } else { // only > present , and no other command
-                        pipeoutprev = 1;
+                                 pipeoutprev = 1;
     			    }// end of parsing > when only > present 
     		    }else {
                     commandEnd(pipecmdCP[iinout].argspCopy[jinout]);
