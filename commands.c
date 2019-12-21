@@ -86,8 +86,8 @@ void executeCommand(char *str ){
             int numcopy;
         };
 
-	    // initialize variables
-	    int commandNum = pipePresent+1;
+	// initialize variables
+	int commandNum = pipePresent+1;
         int noError = 1; // for error checking
         //struct initialization
         struct pipeCmd pipecmd[commandNum]; // voyonkor ekta vul cilo
@@ -105,81 +105,80 @@ void executeCommand(char *str ){
 	    for (int iparse=0; iparse<tokenNumber ;iparse++){ // parsing pipes
 	    	if (strchr(argsCopy[iparse], '|') != NULL){
     			if ( strlen(argsCopy[iparse]) > 1){
-                    char *commPi = argsCopy[iparse];
-    				int index = strchr(argsCopy[iparse],'|')-argsCopy[iparse];
-    			    int length = strlen(argsCopy[iparse]);
-                    //fprintf(stderr, "%d %d\n",index, length );
-    				char *argsPip[strlen(argsCopy[iparse])];
-    				char *pipeToken = strtok(argsCopy[iparse], "|");
-    				int piJ =0;// track tokens
-	    	        while( pipeToken != NULL){
-                        argsPip[piJ] = pipeToken;
-                        
-                        if (index == 0){
-                            jS++;
-                            jP=0;
+                             char *commPi = argsCopy[iparse];
+    		             int index = strchr(argsCopy[iparse],'|')-argsCopy[iparse];
+    			     int length = strlen(argsCopy[iparse]);
+                             //fprintf(stderr, "%d %d\n",index, length );
+    		             char *argsPip[strlen(argsCopy[iparse])];
+    			     char *pipeToken = strtok(argsCopy[iparse], "|");
+    			     int piJ =0;// track tokens
+	    	             while( pipeToken != NULL){
+                                  argsPip[piJ] = pipeToken;
+                                  if (index == 0){
+                                       jS++;
+                                       jP=0;
 
-                            commandEnd (argsPip[piJ]);
-                            pipecmdCP[jS].argspCopy[jP] = argsPip[piJ];
-                            jP++;
-                            pipecmdCP[jS].numcopy = jP;
-                        }// first index
-                        if ((index>0) && (index <(length-1))){
-                            if(piJ==0){// starts the new one
-                                pipecmdCP[jS].argspCopy[jP] = argsPip[piJ];
-                                jP++;
-                                pipecmdCP[jS].argspCopy[jP] = NULL;
-                                pipecmdCP[jS].numcopy = jP;
-                            }
-                            if(piJ>0) {
-                                jS++;
-                                jP=0;
-                                commandEnd (argsPip[piJ]);
-                                pipecmdCP[jS].argspCopy[jP] = argsPip[piJ];
-                                jP++;
-                                pipecmdCP[jS].numcopy = jP;
-                            }
-                        }// middle index
+                                       commandEnd (argsPip[piJ]);
+                                       pipecmdCP[jS].argspCopy[jP] = argsPip[piJ];
+                                       jP++;
+                                       pipecmdCP[jS].numcopy = jP;
+                                   }// first index
+                                   if ((index>0) && (index <(length-1))){
+                                       if(piJ==0){// starts the new one
+                                          pipecmdCP[jS].argspCopy[jP] = argsPip[piJ];
+                                          jP++;
+                                          pipecmdCP[jS].argspCopy[jP] = NULL;
+                                          pipecmdCP[jS].numcopy = jP;
+                                       }
+                                       if(piJ>0) {
+                                          jS++;
+                                          jP=0;
+                                          commandEnd (argsPip[piJ]);
+                                          pipecmdCP[jS].argspCopy[jP] = argsPip[piJ];
+                                          jP++;
+                                          pipecmdCP[jS].numcopy = jP;
+                                       }
+                                   }// middle index
 
-                        if(index == (length-1)){
-                            pipecmdCP[jS].argspCopy[jP] = argsPip[piJ];
-                            jP++;
+                                   if(index == (length-1)){
+                                        pipecmdCP[jS].argspCopy[jP] = argsPip[piJ];
+                                        jP++;
                             
-                            pipecmdCP[jS].argspCopy[jP] = NULL;
-                            pipecmdCP[jS].numcopy = jP;
-                            jS++;
-                            jP=0;
-                        }// end index
+                                        pipecmdCP[jS].argspCopy[jP] = NULL;
+                                        pipecmdCP[jS].numcopy = jP;
+                                        jS++;
+                                        jP=0;
+                                   }// end index
                         
-                        // change the index
-                        for (int m=index; m<length ; m++){
-                            if (commPi[m] =='|'){
-                                index = m;
-                                break;
-                            }
-                        }// end of change in index
+                                   // change the index
+                                   for (int m=index; m<length ; m++){
+                                        if (commPi[m] =='|'){
+                                            index = m;
+                                            break;
+                                        }
+                                   }// end of change in index
                         
-                        pipeToken = strtok(NULL, "|");
-                        piJ++; 
-                    }// end of while loop of strtok of pipe
+                                   pipeToken = strtok(NULL, "|");
+                                   piJ++; 
+                            }// end of while loop of strtok of pipe
     			}else{// else of if only pipe present
-    				pipecmdCP[jS].argspCopy[jP] = NULL;
-                    jS++;
-    		        jP=0;
-    		    }// end of pipe present
-    		}else {// else of no pipe present
+    		            pipecmdCP[jS].argspCopy[jP] = NULL;
+                            jS++;
+    		            jP=0;
+    		        }// end of pipe present
+    		   }else {// else of no pipe present
 	    		if (jP==0){
-    		    	commandEnd (argsCopy[iparse]);
-    		    }
+    		    	     commandEnd (argsCopy[iparse]);
+    		         }
 	    		pipecmdCP[jS].argspCopy[jP] = argsCopy[iparse];
-                jP++;
+                        jP++;
 	    		pipecmdCP[jS].numcopy = jP;
-	    	}// end of no pipe
-	    	if (iparse == tokenNumber -1){ // only for the forloop
-    	    	pipecmdCP[jS].argspCopy[jP] = NULL;
-    	    	pipecmdCP[jS].numcopy = jP;
-    	    }
-	    }// end of for loop parsing pipes
+	    	   }// end of no pipe
+	    	   if (iparse == tokenNumber -1){ // only for the forloop
+    	    	        pipecmdCP[jS].argspCopy[jP] = NULL;
+    	    	        pipecmdCP[jS].numcopy = jP;
+    	           }
+	      }// end of for loop parsing pipes
 
 	    //printing first commands
 	    //for (int ifcomm=0; ifcomm<commandNum ; ifcomm++){
