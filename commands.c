@@ -206,36 +206,36 @@ void executeCommand(char *str ){
     			    	    argsIn[ipIn] = tokenIn;
     			    	    tokenIn = strtok(NULL, "<");
     			    	    ipIn ++;
-                        }// end of token
-                        if (index == 0){
-                            commandEnd(argsIn[0]);
-    			    		pipecmd[iinout].pipein = argsIn[0];
-    			    	}//end of first index
-    			        if ((index>0) && (index <(length-1))){
-                            commandEnd(argsIn[0]);
-    			    		pipecmd[iinout].argsP[track] = argsIn[0];
-                            track++;
-                            pipecmd[iinout].num++;
+                                }// end of token
+                               if (index == 0){
+                                    commandEnd(argsIn[0]);
+    			    	    pipecmd[iinout].pipein = argsIn[0];
+    			       }//end of first index
+    			       if ((index>0) && (index <(length-1))){
+                                    commandEnd(argsIn[0]);
+    			            pipecmd[iinout].argsP[track] = argsIn[0];
+                                    track++;
+                                    pipecmd[iinout].num++;
 
-                            commandEnd(argsIn[1]);
-    			    		pipecmd[iinout].pipein = argsIn[1];
-    			    	}// end of middle index
-    			        if(index == (length-1)){
-                            pipeinprev = 1;
-                            commandEnd(argsIn[0]);
+                                    commandEnd(argsIn[1]);
+    			            pipecmd[iinout].pipein = argsIn[1];
+    			       }// end of middle index
+    			       if(index == (length-1)){
+                                    pipeinprev = 1;
+                                    commandEnd(argsIn[0]);
     			    	    pipecmd[iinout].argsP[track] = argsIn[0];
-                            track++;
-                            pipecmd[iinout].num++;
-    			    	}// end of last index
+                                    track++;
+                                    pipecmd[iinout].num++;
+    			       }// end of last index
     			    } else {// < only present no other command
-                        pipeinprev = 1;
+                                    pipeinprev = 1;
     			    }// end of < parsing
     		    }else if (strchr(pipecmdCP[iinout].argspCopy[jinout],'>') != NULL){// start of > parsing
     			    pipecmd[iinout].pOut++;
     			    if ( strlen(pipecmdCP[iinout].argspCopy[jinout]) > 1){// start of > and other command
     			    	int index = strchr(pipecmdCP[iinout].argspCopy[jinout],'>')- pipecmdCP[iinout].argspCopy[jinout];
     			        int length = strlen(pipecmdCP[iinout].argspCopy[jinout]);
-    				    char *argsOut[length];
+    				char *argsOut[length];
 
     			        char *tokenOut = strtok (pipecmdCP[iinout].argspCopy[jinout], ">");
     			        int ipOut =0;
@@ -243,44 +243,44 @@ void executeCommand(char *str ){
     			    	    argsOut[ipOut] = tokenOut;
     			    	    tokenOut = strtok(NULL, ">");
     			    	    ipOut ++;
-                        }
-                        if (index == 0){
-                            commandEnd(argsOut[0]);
-    			    		pipecmd[iinout].pipeout = argsOut[0]; 
-    			    	}// end of first index
-    			        if ((index>0) && (index <(length-1))){
-                            commandEnd(argsOut[0]);
-    			    		pipecmd[iinout].argsP[track] = argsOut[0];
-                            track++;
-                            pipecmd[iinout].num++;
-
-                            commandEnd(argsOut[1]);
-    			    		pipecmd[iinout].pipeout = argsOut[1];
-    			    	}// end of middle index
-    			        if(index == (length-1)){
-                            pipeoutprev = 1;
-                            commandEnd(argsOut[0]);
+                                }
+                               if (index == 0){
+                                    commandEnd(argsOut[0]);
+    			    	    pipecmd[iinout].pipeout = argsOut[0]; 
+    			       }// end of first index
+    			       if ((index>0) && (index <(length-1))){
+                                    commandEnd(argsOut[0]);
     			    	    pipecmd[iinout].argsP[track] = argsOut[0];
-                            track++;
-                            pipecmd[iinout].num++;
+                                    track++;
+                                    pipecmd[iinout].num++;
+
+                                    commandEnd(argsOut[1]);
+    			            pipecmd[iinout].pipeout = argsOut[1];
+    			       }// end of middle index
+    			       if(index == (length-1)){
+                                    pipeoutprev = 1;
+                                    commandEnd(argsOut[0]);
+    			    	    pipecmd[iinout].argsP[track] = argsOut[0];
+                                    track++;
+                                    pipecmd[iinout].num++;
     			    	}// end of last index
     			    } else { // only > present , and no other command
-                        pipeoutprev = 1;
+                                pipeoutprev = 1;
     			    }// end of parsing > when only > present 
     		    }else {
-                    commandEnd(pipecmdCP[iinout].argspCopy[jinout]);
-                    if (pipeinprev){
-                        pipecmd[iinout].pipein = pipecmdCP[iinout].argspCopy[jinout];
-                        pipeinprev =0;
-                    }else if (pipeoutprev){
-                        pipecmd[iinout].pipeout = pipecmdCP[iinout].argspCopy[jinout];
-                        pipeoutprev =0;
-                    }else {
-                        pipecmd[iinout].argsP[track] = pipecmdCP[iinout].argspCopy[jinout];
-                        track++;
-                        pipecmd[iinout].num++;
-                    }
-                }// end of > parsing
+                           commandEnd(pipecmdCP[iinout].argspCopy[jinout]);
+                           if (pipeinprev){
+                                pipecmd[iinout].pipein = pipecmdCP[iinout].argspCopy[jinout];
+                                pipeinprev =0;
+                           }else if (pipeoutprev){
+                                pipecmd[iinout].pipeout = pipecmdCP[iinout].argspCopy[jinout];
+                                pipeoutprev =0;
+                           }else {
+                                pipecmd[iinout].argsP[track] = pipecmdCP[iinout].argspCopy[jinout];
+                                track++;
+                                pipecmd[iinout].num++;
+                           }
+                     }// end of > parsing
 	    	}// end of jinout forloop
 	    }// end of iinout forloop
 
@@ -349,16 +349,16 @@ void executeCommand(char *str ){
         int historyCalled = 0;
 
         fflush(stdin);
-	    fflush(stdout);
+	fflush(stdout);
         for (int ipipe=0; ipipe< commandNum ; ipipe++){
         	pid = fork();
         	if (pid == 0){ // childs
-        		signal(SIGINT, SIG_DFL); // signal handling
-        		//if first command has in redirection
+        	    signal(SIGINT, SIG_DFL); // signal handling
+        	    //if first command has in redirection
         	    if (pipecmd[ipipe].pIn >0){
                     if ((fdpin = open(pipecmd[ipipe].pipein, O_RDONLY, 0)) < 0) {
-                        perror("1.Error: ");
-                        exit(externalExit);
+                           perror("1.Error: ");
+                           exit(externalExit);
                     }
                     dup2(fdpin, 0);
                     close (fdpin);
@@ -366,43 +366,43 @@ void executeCommand(char *str ){
                 //if the last command has out redirection
                 if (pipecmd[ipipe].pOut >0){
                     if ((fdpout = open( pipecmd[ipipe].pipeout, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0) {
-        	            perror("2.Error: ");
+        	        perror("2.Error: ");
                         exit(externalExit);
                     }
                     dup2(fdpout, 1); // 1 here can be replaced by STDOUT_FILENO
                     close(fdpout);
                 }
 
-        		if (ipipe != (commandNum -1)){ // if not last cmd
-        			if (dup2(pipefd[iP+1], 1)<0){
-        				perror("dup2");
-        				exit(EXIT_FAILURE);
-        			}
-        		}
-        		// if not first command 
-        		if (iP != 0){
-        			if (dup2(pipefd[iP -2], 0) <0){
-        				perror("dup2");
-        				exit(EXIT_FAILURE);
-        			}
-        		}
+                if (ipipe != (commandNum -1)){ // if not last cmd
+        	     if (dup2(pipefd[iP+1], 1)<0){
+        		perror("dup2");
+        		exit(EXIT_FAILURE);
+        	     }
+        	}
+        	// if not first command 
+        	if (iP != 0){
+        	     if (dup2(pipefd[iP -2], 0) <0){
+        	         perror("dup2");
+        		 exit(EXIT_FAILURE);
+        	     }
+        	}
 
-        		for (int iC =0; iC< 2*pipePresent; iC++){
-        			close(pipefd[iC]);
-        		}
+        	for (int iC =0; iC< 2*pipePresent; iC++){
+        	      close(pipefd[iC]);
+        	}
 
-        		if((ifCommand(pipecmd[ipipe].argsP[0],"history")==0)){
-        		    exitStatus = EXIT_SUCCESS;
+        	if((ifCommand(pipecmd[ipipe].argsP[0],"history")==0)){
+        	    exitStatus = EXIT_SUCCESS;
                     add_history(fullCommand, exitStatus,firstSequenceNumber);
                     print_history(firstSequenceNumber);
                     historyCalled = 1;
-        		} else if(execvp(pipecmd[ipipe].argsP[0], pipecmd[ipipe].argsP) <0){
-        			    perror("Error");
-		            }
-		        _exit(externalExit);// failed command
+        	} else if(execvp(pipecmd[ipipe].argsP[0], pipecmd[ipipe].argsP) <0){
+                    perror("Error");
+		}
+		_exit(externalExit);// failed command
 		        
         	}else if (pid <0){ // if fork failed
-        		perror("Error");
+        	    perror("Error");
         	    exit (EXIT_FAILURE);
         	}
         	    
