@@ -676,61 +676,61 @@ void executeCommand(char *str ){
 
 
 int executeExternalCommand(char *arg0, char *args[], int inRedirect, int outRedirect, char *indexIn,char *indexOut){
-	int exitResult;
+    int exitResult;
     int inEx = dup(0);
     int outEx = dup(1);
-	int fdInEx;
-	int fdOutEx;
+    int fdInEx;
+    int fdOutEx;
 
     fflush(stdin);
-	fflush(stdout);
+    fflush(stdout);
     int childPid = fork();
 	if (childPid == 0){
-		signal(SIGINT, SIG_DFL); // crtl+c handling
+	    signal(SIGINT, SIG_DFL); // crtl+c handling
 	    if (inRedirect >0){
-            if ((fdInEx = open(indexIn, O_RDONLY, 0)) < 0) {
-                perror("Error: ");
-                exit(externalExit);
+                if ((fdInEx = open(indexIn, O_RDONLY, 0)) < 0) {
+                    perror("Error: ");
+                    exit(externalExit);
+                 }
+                 dup2(fdInEx, 0);
+                 close (fdInEx);
             }
-            dup2(fdInEx, 0);
-            close (fdInEx);
-        }
-        if (outRedirect >0){
-            if ((fdOutEx = open( indexOut, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0) {
-        	    perror("Error: ");
-                exit(externalExit);
+            if (outRedirect >0){
+                if ((fdOutEx = open( indexOut, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0) {
+        	   perror("Error: ");
+                   exit(externalExit);
+                }
+                dup2(fdOutEx, 1); // 1 here can be replaced by STDOUT_FILENO
+                close(fdOutEx);
             }
-            dup2(fdOutEx, 1); // 1 here can be replaced by STDOUT_FILENO
-            close(fdOutEx);
-        }
-		if (execvp(arg0, args) <0 ){
-			perror("Error");
-		}
-		_exit(externalExit);
+	    if (execvp(arg0, args) <0 ){
+	        perror("Error");
+	    }
+	    _exit(externalExit);
 	}
 	dup2(inEx, 0);
-    dup2(outEx, 1);
-    close(inEx);
-    close(outEx);
+        dup2(outEx, 1);
+        close(inEx);
+        close(outEx);
 
 	if (childPid >0){
-		fflush(stdout);// calling before waitpid
-		if (waitpid(childPid, &exitResult, 0) >0){  
-			return WEXITSTATUS(exitResult);
-		} else { //waitpid failed
-			perror ("Error");
-			return -1;
-		}
-	} else {// fork failed
-		perror("Error");
+	    fflush(stdout);// calling before waitpid
+            if (waitpid(childPid, &exitResult, 0) >0){  
+		return WEXITSTATUS(exitResult);
+	    } else { //waitpid failed
+		perror ("Error");
 		return -1;
+	    }
+	} else {// fork failed
+	    perror("Error");
+	    return -1;
 	}
 }
 
 // cd command
 int cd (char *pth){
-	char cwd[MAXLINE -1]; // check later again
-	char path[MAXLINE -1];
+    char cwd[MAXLINE -1]; // check later again
+    char path[MAXLINE -1];
     strcpy(path,pth);
     int currentDirectory =0;
     if (path == NULL ) {
@@ -759,7 +759,7 @@ int cd (char *pth){
             int tokenNumberCwd = 0;
             /* walk through other tokens */
             while( tokenCwd != NULL ) {
-        	    argsCwd[tokenNumberCwd] = tokenCwd;
+        	argsCwd[tokenNumberCwd] = tokenCwd;
                 tokenCwd = strtok(NULL, delimeterCwd);// do not use delimeter otherwise cd won't work
                 tokenNumberCwd++;
             }
@@ -778,11 +778,11 @@ int cd (char *pth){
 
 /// take care of new line at the end of the command tokens
 void commandEnd (char *arg){
-	for(int comE=0; comE< strlen(arg); comE++){ // args[0] was here
-    	if(arg[comE] == '\n'){ // here there is no space only a new line
+     for(int comE=0; comE< strlen(arg); comE++){ // args[0] was here
+    	 if(arg[comE] == '\n'){ // here there is no space only a new line
     		arg[comE]= '\0';
-    	}
-    }
+    	 }
+     }
 }
 
 //if a command is equal to other command
